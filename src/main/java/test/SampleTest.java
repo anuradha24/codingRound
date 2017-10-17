@@ -1,12 +1,11 @@
 package test;
-import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import common.CommonSteps;
+import common.BaseSteps;
 import page.FlightSearchPage;
 import page.HomePage;
 import page.HotelSearchPage;
@@ -27,26 +26,19 @@ public class SampleTest {
 	 
 	 @BeforeMethod
 	 public void setup(){
-		 driver = CommonSteps.instantiateDriver();
+		 driver = BaseSteps.instantiateDriver();
 		 driver.get("https://www.cleartrip.com/");
+		 driver.manage().window().maximize();
 	 }
-	 @Test
+	@Test
 	 public void shouldThrowAnErrorIfSignInDetailsAreMissing() {
 		 signInPage =  new SignInPage(driver);
 		 homePage = new HomePage(driver);
-		 String primaryWindowHandle = driver.getWindowHandle();
 		 homePage.clickYourTripsLink();
 		 homePage.clickOnSignIn();
-		 Set<String> windowHandles = driver.getWindowHandles();
-	        for(String handle : windowHandles){
-	        	if(!primaryWindowHandle.equalsIgnoreCase(handle)){
-	        		driver.switchTo().window(primaryWindowHandle);
-	        		signInPage.clickOnSignIn();
-	        		Assert.assertTrue(signInPage.getErrorMessage().contains("There were errors in your submission"));
-	        		driver.close();
-	        	}
-	        }
-	        driver.switchTo().window(primaryWindowHandle);
+		 driver.switchTo().frame(signInPage.getFrameId());
+		 signInPage.clickOnSignIn();
+     	 Assert.assertTrue(signInPage.getErrorMessage().contains("There were errors in your submission"));
 	 }
 	 
 	 @Test
@@ -70,9 +62,9 @@ public class SampleTest {
 		 }
 		 flightSearchPage.selectOneWayOption();
 		 flightSearchPage.inputFromField("Bangalore");
-		 flightSearchPage.selectFirstSourceOption();
+		 flightSearchPage.selectFirstSourceOption("Bangalore");
 		 flightSearchPage.inputToField("Delhi");
-		 flightSearchPage.selectFirstDestinationOption();
+		 flightSearchPage.selectFirstDestinationOption("Delhi");
 		 flightSearchPage.selectCurrentDate();
 		 flightSearchPage.clickSearchButton();
 		 Assert.assertTrue(utils.isElementPresent(searchResultsPage.getSearchSummaryElement()));

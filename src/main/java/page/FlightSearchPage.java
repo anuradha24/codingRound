@@ -1,6 +1,7 @@
 package page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -53,20 +54,34 @@ public class FlightSearchPage {
 		this.toField.sendKeys(destination);
 	}
 	
-	public WebElement waitForSourceAutoCompleteOptions(){
-		return this.wait.until(ExpectedConditions.visibilityOf(this.sourceOptionsList));
+	public WebElement waitForSourceAutoCompleteOptions(String source){
+			for(int i=0;i<3;i++){
+				try{
+					return this.wait.until(ExpectedConditions.visibilityOf(this.sourceOptionsList));
+				}catch(TimeoutException e){
+				this.inputFromField(source);
+			}
+		}
+			return this.wait.until(ExpectedConditions.visibilityOf(this.sourceOptionsList));
 	}
 	
-	public void selectFirstSourceOption(){
-		this.waitForSourceAutoCompleteOptions().findElements(By.tagName("li")).get(0).click();
+	public void selectFirstSourceOption(String source){
+		this.waitForSourceAutoCompleteOptions(source).findElements(By.tagName("li")).get(0).click();
 	}
 	
-	public WebElement waitForDestinationAutoCompleteOptions(){
+	public WebElement waitForDestinationAutoCompleteOptions(String destination){
+		for(int i=0;i<3;i++){
+			try{
+				return this.wait.until(ExpectedConditions.visibilityOf(this.destinationOptionsList));
+			}catch(TimeoutException e){
+			this.inputToField(destination);
+		}
+	}
 		return this.wait.until(ExpectedConditions.visibilityOf(this.destinationOptionsList));
 	}
 	
-	public void selectFirstDestinationOption(){
-		this.waitForDestinationAutoCompleteOptions().findElements(By.tagName("li")).get(0).click();
+	public void selectFirstDestinationOption(String destination){
+		this.waitForDestinationAutoCompleteOptions(destination).findElements(By.tagName("li")).get(0).click();
 	}
 	
 	public void clickSearchButton(){

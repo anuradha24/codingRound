@@ -16,23 +16,14 @@ I made the setDriverPath() method as a static member of the test class and calle
 ---
 #### In SignInTest:
 #### Error:
-Once the signIn button is clicked, the signIn page is coming as a different window (different DOM structure from the current page), so the signInButton was not found with an exception as follows: 
+Once the signIn button is clicked, the signIn page is an iframe, so the signInButton was not found with an exception as follows: 
 
 org.openqa.selenium.NoSuchElementException: no such element: Unable to locate element: {"method":"id","selector":"signInButton"}
 
 #### Fix:
-The fix is to switch to the signIn window by getting hold of its handle as follows:
+The fix is to switch to the frame using the frameid as follows:
 
-     Set<String> windowHandles = driver.getWindowHandles();
-            for(String handle : windowHandles){
-            	if(!primaryWindowHandle.equalsIgnoreCase(handle)){
-            		driver.switchTo().window(primaryWindowHandle);
-            		driver.findElement(By.id("signInButton")).click();
-            		String errors1 = driver.findElement(By.id("errors1")).getText();
-                    Assert.assertTrue(errors1.contains("There were errors in your submission"));
-                    driver.close();
-            	}
-            }
+     driver.switchTo().frame("FRAME_ID");
 
 ---
 #### In HotelBookingTest:

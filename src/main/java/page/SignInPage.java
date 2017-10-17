@@ -7,8 +7,9 @@ import org.openqa.selenium.support.PageFactory;
 
 public class SignInPage {
 	private WebDriver driver;
+	private static final String FRAME_ID = "modal_window";
 	
-	@FindBy(id = "SignIn")
+	@FindBy(id = "signInButton")
 	private WebElement signInButton;
 	
 	@FindBy(id = "errors1")
@@ -21,6 +22,10 @@ public class SignInPage {
 	
 	public void clickOnSignIn(){
 		this.signInButton.click();
+	}
+	
+	public String getFrameId(){
+		return FRAME_ID;
 	}
 	
 	public String getErrorMessage(){

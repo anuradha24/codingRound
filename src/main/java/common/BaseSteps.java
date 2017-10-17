@@ -5,7 +5,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import com.sun.javafx.PlatformUtil;
 
-public class CommonSteps {
+public class BaseSteps {
 	static {
 		setDriverPath();
 	}
