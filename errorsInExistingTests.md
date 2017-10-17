@@ -73,6 +73,6 @@ Second issue was that in the following step, we were trying to get the date of 1
 #### Fix:
 So, I assumed that the test case trying to select the current date so I wrote a selector as follows which fixed the test:
 
-    driver.findElement(By.xpath(".//*[contains(@class,'ui-state-highlight')]")).click();
+    driver.findElement(By.xpath(".//td[contains(@class,'ui-datepicker')]/a[contains(@class,'ui-state-highlight')]")).click();
 
 The current date is highlighted by default and therefore has the above css class included in its class property
