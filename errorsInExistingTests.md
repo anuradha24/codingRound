@@ -23,7 +23,7 @@ org.openqa.selenium.NoSuchElementException: no such element: Unable to locate el
 #### Fix:
 The fix is to switch to the frame using the frameid as follows:
 
-     driver.switchTo().frame("FRAME_ID");
+     driver.switchTo().frame("modal_window");
 
 ---
 #### In HotelBookingTest:
@@ -67,3 +67,17 @@ So, I assumed that the test case trying to select the current date so I wrote a 
     driver.findElement(By.xpath(".//td[contains(@class,'ui-datepicker')]/a[contains(@class,'ui-state-highlight')]")).click();
 
 The current date is highlighted by default and therefore has the above css class included in its class property
+
+Also, on multiple runs of this test, some times the test was failing because the auto-complete options for the source and destination were not appearing when the text was input into the from and to fields.
+Inorder to make sure the test does not fail due to this, I used a loop to keep re-trying the input and wait for the auto-complete options upto 3 times as follows:
+
+    public WebElement waitForSourceAutoCompleteOptions(String source){
+    			for(int i=0;i<3;i++){
+    				try{
+    					return driverUtils.waitForVisibility(this.sourceOptionsList);
+    				}catch(TimeoutException e){
+    				this.inputFromField(source);
+    			}
+    		}
+    			return driverUtils.waitForVisibility(this.sourceOptionsList);
+    	}

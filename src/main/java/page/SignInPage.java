@@ -5,9 +5,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import utils.WebDriverUtils;
+
 public class SignInPage {
 	private WebDriver driver;
 	private static final String FRAME_ID = "modal_window";
+	private WebDriverUtils driverUtils;
 	
 	@FindBy(id = "signInButton")
 	private WebElement signInButton;
@@ -18,10 +21,11 @@ public class SignInPage {
 	public SignInPage(WebDriver driver){
     	this.driver = driver;
     	PageFactory.initElements(this.driver,this);
+    	this.driverUtils = new WebDriverUtils(this.driver);
     }
 	
 	public void clickOnSignIn(){
-		this.signInButton.click();
+		driverUtils.waitForVisibility(this.signInButton).click();
 	}
 	
 	public String getFrameId(){
@@ -29,6 +33,6 @@ public class SignInPage {
 	}
 	
 	public String getErrorMessage(){
-		return this.errorMessage.getText();
+		return driverUtils.waitForVisibility(this.errorMessage).getText();
 	}
 }

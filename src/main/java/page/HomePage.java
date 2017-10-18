@@ -5,8 +5,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import utils.WebDriverUtils;
+
 public class HomePage {
 	private WebDriver driver;
+	private WebDriverUtils driverUtils;
 	
 	@FindBy(linkText = "Hotels")
 	private WebElement hotelLink;
@@ -20,17 +23,18 @@ public class HomePage {
 	public HomePage(WebDriver driver){
     	this.driver = driver;
     	PageFactory.initElements(this.driver,this);
+    	this.driverUtils = new WebDriverUtils(this.driver);
     }
 	
 	public void clickHotelLink(){
-	    	this.hotelLink.click();
+		driverUtils.waitForVisibility(this.hotelLink).click();
 	    }
 	
 	public void clickYourTripsLink(){
-		this.yourTripsLink.click();
+		driverUtils.waitForVisibility(this.yourTripsLink).click();
 	}
 	
 	public void clickOnSignIn(){
-		this.signInButton.click();
+		driverUtils.waitForVisibility(this.signInButton).click();
 	}
 }

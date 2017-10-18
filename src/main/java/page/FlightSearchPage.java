@@ -6,12 +6,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
+import utils.WebDriverUtils;
 
 public class FlightSearchPage {
 	private WebDriver driver;
-	private WebDriverWait wait;
+	private WebDriverUtils driverUtils;
 	
 	@FindBy(id = "OneWay")
     private WebElement oneWayOption;
@@ -37,32 +37,32 @@ public class FlightSearchPage {
 	public FlightSearchPage(WebDriver driver){
     	this.driver = driver;
     	PageFactory.initElements(this.driver,this);
-    	wait = new WebDriverWait(this.driver,60);
+    	this.driverUtils = new WebDriverUtils(this.driver);
     }
 	
 	public void selectOneWayOption(){
-		this.oneWayOption.click();
+		driverUtils.waitForVisibility(this.oneWayOption).click();
 	}
 	
 	public void inputFromField(String source){
-		this.fromField.clear();
+		driverUtils.waitForVisibility(this.fromField).clear();
 		this.fromField.sendKeys(source);
 	}
 	
 	public void inputToField(String destination){
-		this.toField.clear();
+		driverUtils.waitForVisibility(this.toField).clear();
 		this.toField.sendKeys(destination);
 	}
 	
 	public WebElement waitForSourceAutoCompleteOptions(String source){
 			for(int i=0;i<3;i++){
 				try{
-					return this.wait.until(ExpectedConditions.visibilityOf(this.sourceOptionsList));
+					return driverUtils.waitForVisibility(this.sourceOptionsList);
 				}catch(TimeoutException e){
 				this.inputFromField(source);
 			}
 		}
-			return this.wait.until(ExpectedConditions.visibilityOf(this.sourceOptionsList));
+			return driverUtils.waitForVisibility(this.sourceOptionsList);
 	}
 	
 	public void selectFirstSourceOption(String source){
@@ -72,12 +72,12 @@ public class FlightSearchPage {
 	public WebElement waitForDestinationAutoCompleteOptions(String destination){
 		for(int i=0;i<3;i++){
 			try{
-				return this.wait.until(ExpectedConditions.visibilityOf(this.destinationOptionsList));
+				return driverUtils.waitForVisibility(this.destinationOptionsList);
 			}catch(TimeoutException e){
 			this.inputToField(destination);
 		}
 	}
-		return this.wait.until(ExpectedConditions.visibilityOf(this.destinationOptionsList));
+		return driverUtils.waitForVisibility(this.destinationOptionsList);
 	}
 	
 	public void selectFirstDestinationOption(String destination){
@@ -85,10 +85,10 @@ public class FlightSearchPage {
 	}
 	
 	public void clickSearchButton(){
-		this.searchButton.click();
+		driverUtils.waitForVisibility(this.searchButton).click();
 	}
 	
 	public void selectCurrentDate(){
-		this.currentDate.click();
+		driverUtils.waitForVisibility(this.currentDate).click();
 	}
 }
